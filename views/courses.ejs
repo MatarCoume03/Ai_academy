@@ -1,0 +1,84 @@
+<div class="filters">
+    <select id="levelFilter" class="filter">
+        <option value="">Tous les niveaux</option>
+        <option value="Débutant">Débutant</option>
+        <option value="Intermédiaire">Intermédiaire</option>
+        <option value="Avancé">Avancé</option>
+    </select>
+    
+    <select id="priceFilter" class="filter">
+        <option value="">Toutes les gammes de prix</option>
+        <option value="0-200">Moins de 200€</option>
+        <option value="200-300">200€ à 300€</option>
+        <option value="300+">Plus de 300€</option>
+    </select>
+    
+    <button id="resetFilters" class="btn">Réinitialiser</button>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const levelFilter = document.getElementById('levelFilter');
+        const priceFilter = document.getElementById('priceFilter');
+        const resetBtn = document.getElementById('resetFilters');
+        const courseCards = document.querySelectorAll('.course-card');
+        
+        function filterCourses() {
+            const selectedLevel = levelFilter.value;
+            const selectedPrice = priceFilter.value;
+            
+            courseCards.forEach(card => {
+                const level = card.querySelector('.level').textContent;
+                const price = parseInt(card.querySelector('.price').textContent);
+                
+                const levelMatch = !selectedLevel || level === selectedLevel;
+                let priceMatch = true;
+                
+                if (selectedPrice === '0-200') priceMatch = price < 200;
+                else if (selectedPrice === '200-300') priceMatch = price >= 200 && price <= 300;
+                else if (selectedPrice === '300+') priceMatch = price > 300;
+                
+                card.style.display = (levelMatch && priceMatch) ? 'block' : 'none';
+            });
+        }
+        
+        levelFilter.addEventListener('change', filterCourses);
+        priceFilter.addEventListener('change', filterCourses);
+        resetBtn.addEventListener('click', () => {
+            levelFilter.value = '';
+            priceFilter.value = '';
+            courseCards.forEach(card => card.style.display = 'block');
+        });
+    });
+</script>
+
+<style>
+    .filters {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .filter {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+    }
+</style>
+
+<h2>Nos Cours</h2>
+<p>Découvrez notre sélection de cours d'intelligence artificielle.</p>
+<div class="courses-container">
+<% courses.forEach(course => { %>
+<div class="course-card">
+<h3><%= course.title %></h3>
+<p><%= course.description %></p>
+<div class="course-details">
+<span class="price"><%= course.price %> €</span>
+<span class="level"><%= course.level %></span>
+</div>
+<a href="/contact" class="btn">S'inscrire</a>
+</div>
+<% }); %>
+</div>

@@ -1,0 +1,133 @@
+<h2>Contactez-nous</h2>
+<p>Remplissez le formulaire ci-dessous pour nous contacter ou vous inscrire à un cours.</p>
+
+<% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+    <div class="alert alert-error">
+        <% if (Array.isArray(error_msg)) { %>
+            <ul>
+                <% error_msg.forEach(msg => { %>
+                    <li><%= msg %></li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p><%= error_msg %></p>
+        <% } %>
+    </div>
+<% } %>
+
+<form action="/contact" method="post">
+    <div class="form-group">
+        <label for="firstName">Prénom *</label>
+        <input type="text" id="firstName" name="firstName" 
+               value="<%= typeof formData !== 'undefined' ? formData.firstName : '' %>"
+               required
+               minlength="2"
+               maxlength="50">
+        <small class="form-hint">Minimum 2 caractères</small>
+    </div>
+    
+    <div class="form-group">
+        <label for="lastName">Nom *</label>
+        <input type="text" id="lastName" name="lastName"
+               value="<%= typeof formData !== 'undefined' ? formData.lastName : '' %>"
+               required
+               minlength="2"
+               maxlength="50">
+        <small class="form-hint">Minimum 2 caractères</small>
+    </div>
+    
+    <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email"
+               value="<%= typeof formData !== 'undefined' ? formData.email : '' %>"
+               required
+               pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
+        <small class="form-hint">Format: exemple@domaine.com</small>
+    </div>
+
+    <div class="form-group">
+        <label for="course">Cours d'intérêt</label>
+        <select id="course" name="course">
+            <option value="">-- Sélectionnez un cours --</option>
+            <option value="intro-ia" <%= typeof formData !== 'undefined' && formData.course === 'intro-ia' ? 'selected' : '' %>>Introduction à l'IA</option>
+            <option value="machine-learning" <%= typeof formData !== 'undefined' && formData.course === 'machine-learning' ? 'selected' : '' %>>Machine Learning Fondamental</option>
+            <option value="deep-learning" <%= typeof formData !== 'undefined' && formData.course === 'deep-learning' ? 'selected' : '' %>>Deep Learning Avancé</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" maxlength="500"><%= typeof formData !== 'undefined' ? formData.message : '' %></textarea>
+        <small class="form-hint"><span id="charCount">0</span>/500 caractères</small>
+    </div>
+
+    <button type="submit" class="btn">Envoyer</button>
+</form>
+
+<style>
+    .alert-error {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+    
+    .alert-error ul {
+        margin-bottom: 0;
+        padding-left: 20px;
+    }
+    
+    .form-hint {
+        display: block;
+        margin-top: 5px;
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<script>
+    // Compteur de caractères en temps réel
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageField = document.getElementById('message');
+        const charCount = document.getElementById('charCount');
+        
+        if (messageField && charCount) {
+            // Initialisation
+            charCount.textContent = messageField.value.length;
+            
+            // Mise à jour lors de la saisie
+            messageField.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+        }
+        
+        // Validation côté client pour les champs requis
+        const form = document.querySelector('form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                const requiredFields = form.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.style.borderColor = '#e74c3c';
+                        isValid = false;
+                    } else {
+                        field.style.borderColor = '';
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    alert('Veuillez remplir tous les champs obligatoires');
+                }
+            });
+        }
+    });
+</script>

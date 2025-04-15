@@ -1,0 +1,102 @@
+<div class="confirmation-container">
+    <div class="confirmation-header">
+        <svg class="confirmation-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <h2>Confirmation de réception</h2>
+    </div>
+
+    <div class="confirmation-body">
+        <p class="confirmation-message">
+            Merci <strong><%= firstName %> <%= lastName %></strong> !
+        </p>
+        
+        <p>Nous avons bien reçu votre demande envoyée le <strong><%= contactDate %></strong>.</p>
+        
+        <div class="confirmation-details">
+            <p>Nous vous contacterons à l'adresse :</p>
+            <p class="contact-email"><%= email %></p>
+        </div>
+    </div>
+
+    <div class="confirmation-actions">
+        <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+        <a href="/contact" class="btn btn-secondary">Nouveau message</a>
+    </div>
+</div>
+
+<style>
+    .confirmation-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+    
+    .confirmation-header {
+        margin-bottom: 2rem;
+    }
+    
+    .confirmation-icon {
+        width: 60px;
+        height: 60px;
+        fill: #2ecc71;
+        margin-bottom: 1rem;
+    }
+    
+    .confirmation-message {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+    }
+    
+    .confirmation-details {
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 2rem 0;
+    }
+    
+    .contact-email {
+        font-weight: bold;
+        color: #3498db;
+        margin-top: 0.5rem;
+    }
+    
+    .confirmation-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary {
+        background: #3498db;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #2980b9;
+    }
+    
+    .btn-secondary {
+        background: #f8f9fa;
+        color: #2c3e50;
+        border: 1px solid #ddd;
+    }
+    
+    .btn-secondary:hover {
+        background: #e9ecef;
+    }
+</style>

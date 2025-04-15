@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Academy - <%= pageTitle %></title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        /* Styles des notifications */
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .notification {
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease-out forwards;
+            max-width: 350px;
+        }
+        
+        .notification.success {
+            background-color: #27ae60;
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .notification.error {
+            background-color: #e74c3c;
+            border-left: 5px solid #c0392b;
+        }
+        
+        .notification.info {
+            background-color: #3498db;
+            border-left: 5px solid #2980b9;
+        }
+        
+        .notification .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="/images/robot-logo-qui-dit-ai-dessus_825081-79.avif" alt="AI Academy Logo" width="100">
+            <h1>AI Academy</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/about">À propos</a></li>
+                <li><a href="/courses">Cours</a></li>
+                <li><a href="/contact">Contact</a></li>
+                <li><a href="/subscribers">Abonnés</a></li>
+                <li><a href="/subscribers/new">S'abonner</a></li>
+                <li><a href="/faq">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <%- body %>
+    </main>
+
+    <!-- Conteneur des notifications -->
+    <div class="notification-container">
+        <% if (typeof success_msg !== 'undefined' && success_msg.length > 0) { %>
+            <% success_msg.forEach(msg => { %>
+                <div class="notification success">
+                    <span><%= msg %></span>
+                    <button class="close-btn">&times;</button>
+                </div>
+            <% }); %>
+        <% } %>
+        
+        <% if (typeof error_msg !== 'undefined' && error_msg.length > 0) { %>
+            <% error_msg.forEach(msg => { %>
+                <div class="notification error">
+                    <span><%= msg %></span>
+                    <button class="close-btn">&times;</button>
+                </div>
+            <% }); %>
+        <% } %>
+        
+        <% if (typeof info_msg !== 'undefined' && info_msg.length > 0) { %>
+            <% info_msg.forEach(msg => { %>
+                <div class="notification info">
+                    <span><%= msg %></span>
+                    <button class="close-btn">&times;</button>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> AI Academy. Tous droits réservés.</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifications = document.querySelectorAll('.notification');
+            
+            notifications.forEach(notification => {
+                // Fermeture automatique après 5 secondes
+                const autoCloseTimer = setTimeout(() => {
+                    closeNotification(notification);
+                }, 5000);
+                
+                // Fermeture au clic sur le bouton
+                const closeBtn = notification.querySelector('.close-btn');
+                closeBtn.addEventListener('click', () => {
+                    clearTimeout(autoCloseTimer);
+                    closeNotification(notification);
+                });
+                
+                // Fermeture au survol (pause le timer)
+                notification.addEventListener('mouseenter', () => {
+                    clearTimeout(autoCloseTimer);
+                });
+                
+                notification.addEventListener('mouseleave', () => {
+                    setTimeout(() => {
+                        closeNotification(notification);
+                    }, 2000);
+                });
+            });
+            
+            function closeNotification(notification) {
+                notification.style.animation = 'slideOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
