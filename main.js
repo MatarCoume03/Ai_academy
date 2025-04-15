@@ -7,6 +7,8 @@ const mongoose = require("mongoose"); // Ajout de Mongoose
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const subscribersController = require("./controllers/subscribersController");
+const usersController = require("./controllers/usersController");
+const coursesController = require("./controllers/coursesController");
 const app = express();
 // Définir le port
 app.set("port", process.env.PORT || 3000);
@@ -20,7 +22,12 @@ extended: false
 })
 );
 app.use(express.json());
-app.use(methodOverride('_method'));
+//app.use(methodOverride('_method'));
+const methodOverride = require("method-override");
+app.use(methodOverride("_method", {
+methods: ["POST", "GET"]
+
+}));
 app.use(session({
     secret: 'votre_secret_key',
     resave: false,
@@ -72,6 +79,22 @@ app.get("/subscribers/:id", subscribersController.show);
 app.delete("/subscribers/:id", subscribersController.deleteSubscriber);
 app.get("/subscribers/:id/edit", subscribersController.getEditPage);
 app.post("/subscribers/:id/update", subscribersController.updateSubscriber);
+// Routes pour les utilisateurs
+app.get("/users", usersController.index, usersController.indexView);
+app.get("/users/new", usersController.new);
+app.post("/users/create", usersController.create, usersController.redirectView);
+app.get("/users/:id", usersController.show, usersController.showView);
+app.get("/users/:id/edit", usersController.edit);
+app.put("/users/:id/update", usersController.update, usersController.redirectView);
+app.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
+// Routes pour les cours
+app.get("/courses", coursesController.index, coursesController.indexView);
+app.get("/courses/new", coursesController.new);
+app.post("/courses/create", coursesController.create, coursesController.redirectView);
+app.get("/courses/:id", coursesController.show, coursesController.showView);
+app.get("/courses/:id/edit", coursesController.edit);
+app.put("/courses/:id/update", coursesController.update, coursesController.redirectView);
+app.delete("/courses/:id/delete", coursesController.delete, coursesController.redirectView);
 // Ajoutez cette ligne après les autres routes GET
 app.get("/faq", homeController.faq);
 app.post("/contact", homeController.processContact);
