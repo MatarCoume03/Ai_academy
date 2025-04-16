@@ -1,4 +1,5 @@
 const Course = require("../models/course");
+const mongoose = require('mongoose');
 // Fonction utilitaire pour extraire les paramètres du cours du corps de la requête
 const getCourseParams = body => {
 return {
@@ -92,16 +93,28 @@ console.log(`Erreur lors de la mise à jour du cours par ID: ${error.message}`);
 next(error);
 });
 },
-delete: (req, res, next) => {
-let courseId = req.params.id;
-Course.findByIdAndRemove(courseId)
-.then(() => {
-res.locals.redirect = "/courses";
-next();
-})
-.catch(error => {
-console.log(`Erreur lors de la suppression du cours par ID: ${error.message}`);
-next();
-});
+delete: async (req, res) => {
+    try {
+        const courseId = req.params.id;
+        
+        if (!mongoose.Types.ObjectId.isValid(courseId)) {
+            req.flash('error_msg', 'ID cours invalide');
+            return res.redirect("/courses");
+        }
+
+        const deletedCourse = await Course.findByIdAndDelete(courseId);
+        
+        if (!deletedCourse) {
+            req.flash('error_msg', 'Cours non trouvé');
+            return res.redirect("/courses");
+        }
+
+        req.flash('success_msg', 'Cours supprimé avec succès');
+        res.redirect("/courses");
+    } catch (error) {
+        console.error('Erreur suppression:', error);
+        req.flash('error_msg', 'Erreur serveur lors de la suppression');
+        res.redirect("/courses");
+    }
 }
 };
