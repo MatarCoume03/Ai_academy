@@ -22,11 +22,10 @@ extended: false
 })
 );
 app.use(express.json());
-//app.use(methodOverride('_method'));
-app.use(methodOverride("_method", {
-methods: ["POST", "GET"]
-
-}));
+app.use(methodOverride('_method'));
+//app.use(methodOverride("_method", {
+//methods: ["POST", "GET",]
+//}));
 app.use(session({
     secret: 'votre_secret_key',
     resave: false,
@@ -67,7 +66,7 @@ app.use(express.static("public"));
 // Définir les routes
 app.get("/", homeController.index);
 app.get("/about", homeController.about);
-app.get("/courses", homeController.courses);
+//app.get("/courses", homeController.courses);
 app.get("/contact", homeController.contact);
 // Routes pour les abonnés
 app.get("/subscribers", subscribersController.getAllSubscribers);
@@ -85,7 +84,7 @@ app.post("/users/create", usersController.create, usersController.redirectView);
 app.get("/users/:id", usersController.show, usersController.showView);
 app.get("/users/:id/edit", usersController.edit);
 app.put("/users/:id/update", usersController.update, usersController.redirectView);
-app.delete("/users/:id/delete", usersController.delete, usersController.redirectView);
+app.delete('/users/:id', usersController.delete);
 // Routes pour les cours
 app.get("/courses", coursesController.index, coursesController.indexView);
 app.get("/courses/new", coursesController.new);
@@ -93,7 +92,7 @@ app.post("/courses/create", coursesController.create, coursesController.redirect
 app.get("/courses/:id", coursesController.show, coursesController.showView);
 app.get("/courses/:id/edit", coursesController.edit);
 app.put("/courses/:id/update", coursesController.update, coursesController.redirectView);
-app.delete("/courses/:id/delete", coursesController.delete, coursesController.redirectView);
+app.delete("/courses/:id", coursesController.delete);
 // Ajoutez cette ligne après les autres routes GET
 app.get("/faq", homeController.faq);
 app.post("/contact", homeController.processContact);
