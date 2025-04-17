@@ -92,6 +92,7 @@ app.post("/courses/create", coursesController.create, coursesController.redirect
 app.get("/courses/:id", coursesController.show, coursesController.showView);
 app.get("/courses/:id/edit", coursesController.edit);
 app.put("/courses/:id/update", coursesController.update, coursesController.redirectView);
+app.post('/courses/:id/enroll', coursesController.enroll, coursesController.redirectView);
 app.delete("/courses/:id", coursesController.delete);
 // Ajoutez cette ligne après les autres routes GET
 app.get("/faq", homeController.faq);
