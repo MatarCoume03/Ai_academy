@@ -12,6 +12,7 @@ const errorController = require("./controllers/errorController");
 const subscribersController = require("./controllers/subscribersController");
 const usersController = require("./controllers/usersController");
 const coursesController = require("./controllers/coursesController");
+const authController = require("./controllers/authController");
 const app = express();
 // Définir le port
 app.set("port", process.env.PORT || 3000);
@@ -119,6 +120,16 @@ app.get("/courses/:id", coursesController.show, coursesController.showView);
 app.get("/courses/:id/edit", coursesController.edit);
 app.put("/courses/:id/update", coursesController.update, coursesController.redirectView);
 app.delete("/courses/:id/delete", coursesController.delete, coursesController.redirectView);
+// Routes d'authentification
+app.get("/login", authController.login);
+app.post("/login", authController.authenticate);
+app.get("/logout", authController.logout, usersController.redirectView);
+app.get("/signup", authController.signup);
+app.post("/signup", authController.register, usersController.redirectView);
+// Routes protégées - accessibles uniquement aux utilisateurs connectés
+app.use("/users", authController.ensureLoggedIn);
+app.use("/courses/new", authController.ensureLoggedIn);
+app.use("/courses/:id/edit", authController.ensureLoggedIn);
 // Ajoutez cette ligne après les autres routes GET
 app.get("/faq", homeController.faq);
 app.post("/contact", homeController.processContact);
