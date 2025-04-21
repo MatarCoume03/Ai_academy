@@ -90,10 +90,38 @@
                 <li><a href="/subscribers">Abonnés</a></li>
                 <li><a href="/subscribers/new">S'abonner</a></li>
                 <li><a href="/faq">FAQ</a></li>
+                <% if (loggedIn) { %>
+                    <li><a href="/users">Utilisateurs</a></li>
+                    <li>
+                    <a href="/users/<%= currentUser._id %>">
+                    Mon Profil
+                    </a>
+                    </li>
+                    <li>
+                    <a href="/logout">Se déconnecter</a>
+                    </li>
+                    <% } else { %>
+                    <li><a href="/login">Se connecter</a></li>
+                    <li><a href="/signup">S'inscrire</a></li>
+                    <% } %>
+                    <li><a href="/contact">Contact</a></li>
             </ul>
         </nav>
     </header>
-
+    <!--Affichage des messages flash -->
+<div class="flashes">
+    <% if (flashMessages) { %>
+    <% if (flashMessages.success) { %>
+    <div class="flash success">
+    <%= flashMessages.success %>
+    </div>
+    <% } else if (flashMessages.error) { %>
+    <div class="flash error">
+    <%= flashMessages.error %>
+    </div>
+    <% } %>
+    <% } %>
+    </div>
     <main>
         <%- body %>
     </main>
