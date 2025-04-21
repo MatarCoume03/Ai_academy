@@ -3,6 +3,9 @@ const express = require("express");
 const layouts = require("express-ejs-layouts");
 const session = require('express-session');
 const flash = require('connect-flash');
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+const User = require("./models/user");
 const mongoose = require("mongoose"); // Ajout de Mongoose
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
@@ -22,10 +25,22 @@ extended: false
 })
 );
 app.use(express.json());
+// Configuration des cookies et des sessions
+app.use(cookieParser("secret_passcode"));
+app.use(session({
+secret: "secret_passcode",
+cookie: {
+maxAge: 4000000
+},
+resave: false,
+saveUninitialized: false
+}));
+// Configuration de Passport
+app.use(passport.initialize());
+app.use(passport.session());
 //app.use(methodOverride('_method'));
 app.use(methodOverride("_method", {
 methods: ["POST", "GET"]
-
 }));
 app.use(session({
     secret: 'votre_secret_key',
@@ -49,6 +64,13 @@ app.use((req, res, next) => {
     
     next();
 });
+// Middleware pour rendre les variables locales disponibles dans toutes les vues
+app.use((req, res, next) => {
+    res.locals.flashMessages = req.flash();
+    res.locals.loggedIn = req.isAuthenticated();
+    res.locals.currentUser = req.user;
+    next();
+});
 app.use((req, res, next) => {
     res.locals.pageTitle = "AI Academy"; // Valeur par défaut
     next();
@@ -62,6 +84,9 @@ mongoose.connect(
     db.once("open", () => {
     console.log("Connexion réussie à MongoDB en utilisant Mongoose!");
     });
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 // Servir les fichiers statiques
 app.use(express.static("public"));
 // Définir les routes
