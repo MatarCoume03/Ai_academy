@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const mongoose = require("mongoose");
 // Fonction utilitaire pour extraire les paramètres utilisateur du corps de la requête
 const getUserParams = body => {
 return {
@@ -13,7 +14,6 @@ zipCode: body.zipCode
 };
 module.exports = {
 index: (req, res, next) => {
-
 User.find({})
 .then(users => {
 res.locals.users = users;
@@ -94,17 +94,28 @@ console.log(`Erreur lors de la mise à jour de l'utilisateur par ID: ${error.mes
 next(error);
 });
 },
-delete: (req, res, next) => {
-let userId = req.params.id;
-User.findByIdAndRemove(userId)
-.then(() => {
-res.locals.redirect = "/users";
-next();
-})
+delete: async (req, res) => {
+    try {
+        const userId = req.params.id;
+        
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            req.flash('error_msg', 'ID utilisateur invalide');
+            return res.redirect("/users");
+        }
 
-.catch(error => {
-console.log(`Erreur lors de la suppression de l'utilisateur par ID: ${error.message}`);
-next();
-});
+        const deletedUser = await User.findByIdAndDelete(userId);
+        
+        if (!deletedUser) {
+            req.flash('error_msg', 'Utilisateur non trouvé');
+            return res.redirect("/users");
+        }
+
+        req.flash('success_msg', 'Utilisateur supprimé avec succès');
+        res.redirect("/users");
+    } catch (error) {
+        console.error('Erreur suppression:', error);
+        req.flash('error_msg', 'Erreur serveur lors de la suppression');
+        res.redirect("/users");
+    }
 }
 };

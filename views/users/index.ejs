@@ -21,15 +21,17 @@
 <td><%= user.email %></td>
 <td><%= user.zipCode %></td>
 <td>
-<a href="<%= `/users/${user._id}/edit` %>">
-Modifier
+<a href="<%= `/users/${user._id}/edit` %>" class="btn btn-sm btn-warning">
+    <i class="fas fa-edit"></i>Modifier
 </a>
 </td>
 <td>
-<a href="<%= `/users/${user._id}/delete?_method=DELETE` %>"
-onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')">
-Supprimer
-</a>
+    <form action="/users/<%= user._id %>/delete?_method=DELETE" method="POST" class="d-inline">
+        <button type="submit" class="btn btn-sm btn-danger"
+                onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')">
+            <i class="fas fa-trash-alt"></i> Supprimer
+        </button>
+    </form>
 </td>
 </tr>
 <% }); %>

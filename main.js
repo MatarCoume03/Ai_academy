@@ -93,7 +93,7 @@ app.use(express.static("public"));
 // Définir les routes
 app.get("/", homeController.index);
 app.get("/about", homeController.about);
-app.get("/courses", homeController.courses);
+//app.get("/courses", homeController.courses);
 app.get("/contact", homeController.contact);
 // Routes pour les abonnés
 app.get("/subscribers", subscribersController.getAllSubscribers);
@@ -104,6 +104,10 @@ app.get("/subscribers/:id", subscribersController.show);
 app.delete("/subscribers/:id", subscribersController.deleteSubscriber);
 app.get("/subscribers/:id/edit", subscribersController.getEditPage);
 app.post("/subscribers/:id/update", subscribersController.updateSubscriber);
+// Routes protégées - accessibles uniquement aux utilisateurs connectés
+app.use("/users", authController.ensureLoggedIn);
+app.use("/courses/new", authController.ensureLoggedIn);
+app.use("/courses/:id/edit", authController.ensureLoggedIn);
 // Routes pour les utilisateurs
 app.get("/users", usersController.index, usersController.indexView);
 app.get("/users/new", usersController.new);
@@ -126,10 +130,6 @@ app.post("/login", authController.authenticate);
 app.get("/logout", authController.logout, usersController.redirectView);
 app.get("/signup", authController.signup);
 app.post("/signup", authController.register, usersController.redirectView);
-// Routes protégées - accessibles uniquement aux utilisateurs connectés
-app.use("/users", authController.ensureLoggedIn);
-app.use("/courses/new", authController.ensureLoggedIn);
-app.use("/courses/:id/edit", authController.ensureLoggedIn);
 // Ajoutez cette ligne après les autres routes GET
 app.get("/faq", homeController.faq);
 app.post("/contact", homeController.processContact);

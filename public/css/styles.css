@@ -47,8 +47,7 @@
     margin: 20px auto;
     padding: 0 20px; }
     .btn {
-    display: inline
-    -block;
+    display: inline-block;
     background: #3498db;
     color: white;
     padding: 10px 20px;
@@ -62,7 +61,6 @@
     text-align: center;
     padding: 3rem 0;
     background-color: #f8f9fa;
-    
     margin-bottom: 2rem;
     border-radius: 5px;
     }
@@ -118,35 +116,26 @@
     border-radius: 5px;
     }
     /* Page de remerciement */
-    .thanks
-    -message {
+    .thanks-message {
     text-align: center;
     padding: 2rem;
     background-color: #f8f9fa;
-    
     border-radius: 5px;
     }
-    .submission
-    -details {
+    .submission-details {
     margin: 20px auto;
     max-width: 500px;
     text-align: left;
     }
-    .submission
-    
-    -details ul {
-    
+    .submission-details ul {
     list-style: none;
     margin-top: 10px;
     }
-    .submission
-    -details li {
-    
+    .submission-details li {
     margin-bottom: 5px;
     }
     /* Page d'erreur */
-    .error
-    -container {
+    .error-container {
     text-align: center;
     padding: 3rem; }
     /* Pied de page */
