@@ -23,4 +23,8 @@ router.put("/subscribers/:id", apiController.updateSubscriber);
 router.delete("/subscribers/:id", apiController.deleteSubscriber);
 // Génération de token pour l'API
 router.post("/login", apiController.apiAuthenticate);
+// Route pour la documentation (n'a pas besoin de token)
+router.get("/documentation", (req, res) => {
+    res.render("api/documentation");
+    });
 module.exports = router;
