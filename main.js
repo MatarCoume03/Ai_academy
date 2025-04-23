@@ -49,6 +49,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // Method Override
+//app.use(methodOverride('_method'));
 app.use(methodOverride("_method", {
     methods: ["POST", "GET"]
 }));
@@ -84,7 +85,7 @@ app.use("/", routes);
 // Définir les routes
 app.get("/", homeController.index);
 app.get("/about", homeController.about);
-app.get("/courses", homeController.courses);
+//app.get("/courses", homeController.courses);
 app.get("/contact", homeController.contact);
 
 // Routes supplémentaires
@@ -120,7 +121,7 @@ app.post("/courses/create", authController.ensureLoggedIn, coursesController.cre
 app.get("/courses/:id", coursesController.show, coursesController.showView);
 app.get("/courses/:id/edit", authController.ensureLoggedIn, coursesController.edit);
 app.put("/courses/:id/update", authController.ensureLoggedIn, coursesController.update, coursesController.redirectView);
-app.delete("/courses/:id/delete", authController.ensureLoggedIn, coursesController.delete, coursesController.redirectView);
+app.delete("/courses/:id/delete", coursesController.delete, coursesController.redirectView);
 
 // Routes d'authentification
 app.get("/login", authController.login);

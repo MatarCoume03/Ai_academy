@@ -18,7 +18,10 @@ router.delete("/courses/:id", apiController.deleteCourse);
 // Abonnés
 router.get("/subscribers", apiController.getAllSubscribers);
 router.get("/subscribers/:id", apiController.getSubscriberById);
-router.post("/subscribers", apiController.createSubscriber);
+router.post("/subscribers", 
+    apiController.verifyToken,
+    apiController.createSubscriber
+  );  
 router.put("/subscribers/:id", apiController.updateSubscriber);
 router.delete("/subscribers/:id", apiController.deleteSubscriber);
 // Génération de token pour l'API
