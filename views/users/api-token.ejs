@@ -1,0 +1,37 @@
+<h1>Votre Token API</h1>
+<% if (token) { %>
+<div class="api-token-container">
+<p>Utilisez ce token pour accéder à l'API AI Academy :</p>
+<pre class="api-token"><%= token %></pre>
+<div class="api-instructions">
+<h3>Comment utiliser votre token :</h3>
+<ol>
+<li>Incluez ce token dans l'en-tête de chaque requête API :
+<pre>Authorization: Bearer <%= token %></pre>
+</li>
+<li>Ou ajoutez-le comme paramètre de requête :
+<pre>?apiToken=<%= token %></pre>
+</li>
+</ol>
+<h3>Exemples de requêtes :</h3>
+<pre>
+// Avec fetch en JavaScript
+fetch('http://localhost:3000/api/courses', {
+headers: {
+'Authorization': 'Bearer <%= token %>'
+}
+})
+.then(response => response.json())
+.then(data => console.log(data));
+// Avec curl en ligne de commande
+curl -H "Authorization: Bearer <%= token %>" http://localhost:3000/api/courses
+</pre>
+</div>
+</div>
+<% } else { %>
+<p>Vous devez être connecté pour obtenir un token API.</p>
+<% } %>
+<div class="button-group">
+<a href="/users/<%= currentUser._id %>" class="btn btn-primary">Retour à mon profil</a>
+<a href="/api/refresh-token" class="btn btn-warning">Générer un nouveau token</a>
+</div>
