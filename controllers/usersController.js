@@ -117,5 +117,23 @@ delete: async (req, res) => {
         req.flash('error_msg', 'Erreur serveur lors de la suppression');
         res.redirect("/users");
     }
-}
+},
+// Dans usersController.js
+getApiToken: (req, res) => {
+    if (req.user) {
+    let signedToken = jsonWebToken.sign(
+    {
+    data: req.user._id,
+    exp: new Date().setDate(new Date().getDate() + 30) // Token valable 30 jours
+    },
+    token_key
+    );
+    res.render("users/api-token", {
+    token: signedToken
+    });
+    } else {
+    req.flash("error", "Vous devez être connecté pour obtenir un token API.");
+    res.redirect("/login");
+    }
+    }
 };
