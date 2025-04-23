@@ -7,10 +7,10 @@ router.use(authController.ensureLoggedIn);
 // Routes CRUD pour les utilisateurs
 router.get("/", usersController.index, usersController.indexView);
 router.get("/new", usersController.new);
-router.post("/create", usersController.validate, usersController.create, usersController.redirectView);
+router.post("/create", usersController.create, usersController.redirectView);
+router.get("/api-token", usersController.getApiToken);
 router.get("/:id", usersController.show, usersController.showView);
 router.get("/:id/edit", usersController.edit);
 router.put("/:id/update", usersController.update, usersController.redirectView);
 router.delete("/:id/delete", usersController.delete, usersController.redirectView);
-router.get("/api-token", usersController.getApiToken);
 module.exports = router;

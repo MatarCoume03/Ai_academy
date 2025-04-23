@@ -1,5 +1,7 @@
 const User = require("../models/user");
 const mongoose = require("mongoose");
+const jsonWebToken = require("jsonwebtoken");
+const token_key = process.env.TOKEN_KEY || "secretTokenKey";
 // Fonction utilitaire pour extraire les paramètres utilisateur du corps de la requête
 const getUserParams = body => {
 return {
