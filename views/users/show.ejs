@@ -17,11 +17,12 @@
 <h4>Cet utilisateur est lié à un compte abonné.</h4>
 <% } %>
 <div class="button-group">
-<a href="/users" class="btn btn-primary">Tous les utilisateurs</a>
-<a href="<%= `/users/${user._id}/edit` %>" class="btn btn-info">Modifier</a>
-<a href="<%= `/users/${user._id}/delete?_method=DELETE` %>"
-onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')"
-class="btn btn-danger">
-Supprimer
-</a>
-</div>
+    <a href="/users" class="btn btn-primary">Tous les utilisateurs</a>
+    <a href="<%= `/users/${user._id}/edit` %>" class="btn btn-info">Modifier</a>
+    <a href="/users/api-token" class="btn btn-secondary">Mon Token API</a>
+    <a href="<%= `/users/${user._id}/delete?_method=DELETE` %>"
+    onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')"
+    class="btn btn-danger">
+    Supprimer
+    </a>
+    </div>
