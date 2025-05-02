@@ -1,5 +1,5 @@
 <h2>Modifier l'abonné</h2>
-<form action="/subscribers/<%= subscriber._id %>/update" method="POST">
+<form action="/subscribers/<%= subscriber._id %>/update?_method=PUT" method="POST">
     <div class="form-group">
         <label for="name">Nom complet</label>
         <input type="text" class="form-control" id="name" name="name" 

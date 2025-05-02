@@ -96,14 +96,15 @@ app.get("/faq", homeController.faq);
 app.get("/notification", homeController.notification);
 
 // Routes Abonnés
-app.get("/subscribers", subscribersController.getAllSubscribers);
-app.get("/subscribers/new", subscribersController.getSubscriptionPage);
+app.get("/users", authController.ensureLoggedIn, usersController.index, usersController.indexView);
+app.get("/subscribers", authController.ensureLoggedIn, subscribersController.getAllSubscribers);
+app.get("/subscribers/new", authController.ensureLoggedIn, subscribersController.getSubscriptionPage);
 app.post("/subscribers/create", subscribersController.saveSubscriber);
-app.get("/subscribers/search", subscribersController.searchSubscribers);
-app.get("/subscribers/:id", subscribersController.show);
-app.delete("/subscribers/:id", subscribersController.deleteSubscriber);
-app.get("/subscribers/:id/edit", subscribersController.getEditPage);
-app.put("/subscribers/:id/update", subscribersController.updateSubscriber);
+app.get("/subscribers/search", authController.ensureLoggedIn, subscribersController.searchSubscribers);
+app.get("/subscribers/:id", authController.ensureLoggedIn, subscribersController.show);
+app.delete("/subscribers/:id", authController.ensureLoggedIn, subscribersController.deleteSubscriber);
+app.get("/subscribers/:id/edit", authController.ensureLoggedIn, subscribersController.getEditPage);
+app.put("/subscribers/:id/update", authController.ensureLoggedIn, subscribersController.updateSubscriber);
 
 // Routes Utilisateurs
 app.get("/users", authController.ensureLoggedIn, usersController.index, usersController.indexView);
