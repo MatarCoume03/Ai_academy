@@ -36,4 +36,9 @@ onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce cours?')"
 class="btn btn-danger">
 Supprimer
 </a>
+<% if (!course.students.includes(user._id)) { %>
+    <form action="/courses/<%= course._id %>/enroll" method="POST">
+        <button type="submit" class="btn btn-success">S'inscrire</button>
+    </form>
+<% } %>
 </div>

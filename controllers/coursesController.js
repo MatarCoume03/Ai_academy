@@ -116,5 +116,27 @@ delete: async (req, res) => {
         req.flash('error_msg', 'Erreur serveur lors de la suppression');
         res.redirect("/courses");
     }
+},
+enroll: async (req, res, next) => {
+    try {
+        const courseId = req.params.id;
+        const userId = req.user._id; // Supposant que l'utilisateur est connecté
+
+        await Course.findByIdAndUpdate(courseId, {
+            $addToSet: { students: userId }
+        });
+
+        await User.findByIdAndUpdate(userId, {
+            $addToSet: { courses: courseId }
+        });
+
+        req.flash('success_msg', 'Inscription au cours réussie');
+        res.locals.redirect = `/courses/${courseId}`;
+        next();
+    } catch (error) {
+        console.error('Erreur inscription:', error);
+        req.flash('error_msg', 'Échec de l\'inscription');
+        next(error);
+    }
 }
 };
